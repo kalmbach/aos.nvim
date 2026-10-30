@@ -261,11 +261,8 @@ function M.setup(opts)
   config = vim.tbl_deep_extend('force', vim.deepcopy(defaults), opts or {})
 
   if config.keymaps.toggle then
-    vim.keymap.set('n', config.keymaps.toggle, M.toggle, {
+    vim.keymap.set({ 'n', 't' }, config.keymaps.toggle, M.toggle, {
       desc = 'Agent side terminal',
-    })
-    vim.keymap.set('t', config.keymaps.toggle, M.toggle, {
-      desc = 'Agent side terminal'
     })
   end
 
