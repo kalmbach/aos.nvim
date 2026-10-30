@@ -3,8 +3,7 @@ local M = {}
 local defaults = {
   command = { 'claude' },
   keymaps = {
-    toggle = '<leader>a',
-    hide = '<C-q>',
+    toggle = '<M-a>',
     copy_path = 'gP',
     copy_path_with_position = 'gp',
   },
@@ -247,14 +246,6 @@ function M.open()
     return
   end
 
-  if config.keymaps.hide then
-    vim.keymap.set({ 'n', 't' }, config.keymaps.hide, M.hide, {
-      buffer = state.buf,
-      silent = true,
-      desc = 'Hide agent terminal',
-    })
-  end
-
   vim.cmd 'startinsert'
 end
 
@@ -272,6 +263,9 @@ function M.setup(opts)
   if config.keymaps.toggle then
     vim.keymap.set('n', config.keymaps.toggle, M.toggle, {
       desc = 'Agent side terminal',
+    })
+    vim.keymap.set('t', config.keymaps.toggle, M.toggle, {
+      desc = 'Agent side terminal'
     })
   end
 

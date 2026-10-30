@@ -63,8 +63,7 @@ defaults:
 require('aos').setup {
   command = { 'claude' },
   keymaps = {
-    toggle = '<leader>a',
-    hide = '<C-q>',
+    toggle = '<M-a>',
     copy_path = 'gP',
     copy_path_with_position = 'gp',
   },
@@ -87,8 +86,7 @@ require('aos').setup {
 
 | Keys | Mode | What it does |
 | --- | --- | --- |
-| `<leader>a` | normal | Toggle the agent in the current tab |
-| `<C-q>` | normal and terminal, buffer-local | Hide the agent without stopping it |
+| `<M-a>` | normal and terminal | Toggle the agent in the current tab. From inside the agent, it hides the agent without stopping it |
 | `gp` | normal, visual | Copy the absolute file path plus cursor position or visual range to the clipboard (`+` register) |
 | `gP` | normal | Copy only the absolute file path to the clipboard |
 | `<C-\><C-n>` | terminal | Leave terminal mode (Neovim builtin, see `:help terminal-input`) |

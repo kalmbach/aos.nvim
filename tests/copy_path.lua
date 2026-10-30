@@ -14,7 +14,7 @@ assert(vim.fn.maparg('gp', 'n') == '', 'copy_path_with_position=false left gp ma
 assert(vim.fn.maparg('gP', 'n') == '', 'copy_path=false left gP mapped')
 
 aos.setup {}
-assert(vim.fn.maparg('<leader>a', 'n') ~= '', 'default toggle keymap was not installed')
+assert(vim.fn.maparg('<A-a>', 'n') ~= '', 'default toggle keymap was not installed')
 assert(vim.fn.maparg('gp', 'n') ~= '', 'default gp keymap was not installed')
 assert(vim.fn.maparg('gP', 'n') ~= '', 'default gP keymap was not installed')
 

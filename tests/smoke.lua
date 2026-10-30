@@ -18,12 +18,12 @@ assert(vim.wait(1000, function() return vim.bo.buftype == 'terminal' end), 'term
 local buf = vim.api.nvim_get_current_buf()
 local win = vim.api.nvim_get_current_win()
 assert(vim.api.nvim_win_get_config(win).relative == '', 'aos did not open in an editor split')
-assert(vim.fn.maparg('<leader>a', 'n') ~= '', 'toggle keymap was not installed')
+assert(vim.fn.maparg('<M-a>', 'n') ~= '', 'toggle keymap was not installed')
 assert(vim.fn.maparg('gp', 'n') ~= '', 'gp keymap was not installed')
 assert(vim.fn.maparg('gp', 'x') ~= '', 'gp visual keymap was not installed')
 assert(vim.fn.maparg('gP', 'n') ~= '', 'gP keymap was not installed')
-assert(vim.fn.maparg('<C-q>', 'n') ~= '', 'hide keymap was not installed')
-assert(vim.fn.maparg('<C-q>', 't') ~= '', 'hide terminal keymap was not installed')
+assert(vim.fn.maparg('<M-a>', 'n') ~= '', 'hide keymap was not installed')
+assert(vim.fn.maparg('<M-a>', 't') ~= '', 'hide terminal keymap was not installed')
 
 vim.cmd 'Aos hide'
 assert(not vim.api.nvim_win_is_valid(win), 'hide left the split open')
