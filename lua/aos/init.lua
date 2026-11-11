@@ -100,6 +100,7 @@ local function open_split(buf)
     width = split_width(),
   })
 
+  vim.w[win].aos = true
   vim.wo[win][0].winfixwidth = true
   vim.wo[win][0].number = false
   vim.wo[win][0].relativenumber = false
@@ -118,12 +119,16 @@ local function split_count(tab)
   return n
 end
 
+local function reset_current_window()
+  vim.cmd 'setlocal winfixwidth< number< relativenumber< signcolumn<'
+end
+
 local function release(win)
   local empty = vim.api.nvim_create_buf(true, false)
   vim.api.nvim_win_set_buf(win, empty)
 
   vim.api.nvim_win_call(win, function()
-    vim.cmd 'setlocal winfixwidth< number< relativenumber< signcolumn<'
+    reset_current_window()
   end)
 end
 
@@ -279,6 +284,7 @@ function M.setup(opts)
   end
 
   local group = vim.api.nvim_create_augroup('Aos', { clear = true })
+
   vim.api.nvim_create_autocmd('WinNew', {
     group = group,
     callback = function()
@@ -286,6 +292,19 @@ function M.setup(opts)
       vim.schedule(pin_to_edge)
     end,
     desc = 'Keep the agent terminal at the edge',
+  })
+
+  vim.api.nvim_create_autocmd('BufWinEnter', {
+    group = group,
+    callback = function()
+      local win = vim.api.nvim_get_current_win()
+      local buf = vim.api.nvim_get_current_buf()
+      if vim.w[win].aos and buf ~= state.buf then
+        reset_current_window()
+        vim.w[win].aos = nil
+      end
+    end,
+    desc = 'Reset options on a window that does not show aos anymore'
   })
 end
 

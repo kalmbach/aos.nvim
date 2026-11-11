@@ -48,5 +48,22 @@ assert(vim.fn.win_screenpos(win)[2] + width - 1 == vim.o.columns, 'aos did not o
 assert(vim.api.nvim_win_get_width(win) == math.floor(vim.o.columns * 0.35), 'aos did not take the 35% of the editor')
 assert(vim.wo[win].winfixwidth == true, 'aos did not open with a fixed width on the right')
 
+-- vertical splitting from editor squeezes aos width
+vim.o.columns = 180
+aos.open()
+vim.cmd 'only'
+vim.cmd 'enew'
+win = vim.api.nvim_get_current_win()
+assert(vim.wo[win].winfixwidth == false, 'aos left winfixwidth on the window after :enew')
+
+aos.open()
+local agent = vim.api.nvim_get_current_win()
+
+vim.api.nvim_set_current_win(win)
+vim.cmd 'vs test'
+vim.wait(50)
+
+assert(vim.api.nvim_win_get_width(agent) == math.floor(vim.o.columns * 0.35), 'aos did not take the 35% of the editor after :vs')
+
 print('aos.nvim split test passed')
 vim.cmd 'qa!'
