@@ -51,13 +51,24 @@ assert(vim.wo[win].winfixwidth == true, 'aos did not open with a fixed width on 
 -- vertical splitting from editor squeezes aos width
 vim.o.columns = 180
 aos.open()
+local agent = vim.api.nvim_get_current_win()
+local buf = vim.api.nvim_get_current_buf()
+
 vim.cmd 'only'
-vim.cmd 'enew'
+local ok, err = pcall(vim.cmd, 'enew')
+assert(not ok, 'aos buffer is not protected')
+assert(err:find('E1513', 1, true), 'expected error E1513, got: ' .. tostring(err))
+assert(vim.wo[agent].winfixwidth == true, 'aos lost winfixwidth after a blocked :enew')
+assert(vim.wo[agent].winfixbuf == true, 'aos lost winfixbuf after a blocked :enew')
+assert(vim.api.nvim_win_get_buf(agent) == buf, 'aos win is not showing aos buffer')
+
+vim.cmd 'enew!'
 win = vim.api.nvim_get_current_win()
-assert(vim.wo[win].winfixwidth == false, 'aos left winfixwidth on the window after :enew')
+assert(vim.wo[win].winfixwidth == false, 'aos left winfixwidth on the window after :enew!')
+assert(vim.wo[win].winfixbuf == false, 'aos left winfixbuf on the window after :enew!')
 
 aos.open()
-local agent = vim.api.nvim_get_current_win()
+agent = vim.api.nvim_get_current_win()
 
 vim.api.nvim_set_current_win(win)
 vim.cmd 'vs test'

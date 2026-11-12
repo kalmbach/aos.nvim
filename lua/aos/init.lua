@@ -101,6 +101,7 @@ local function open_split(buf)
   })
 
   vim.w[win].aos = true
+  vim.wo[win][0].winfixbuf = true
   vim.wo[win][0].winfixwidth = true
   vim.wo[win][0].number = false
   vim.wo[win][0].relativenumber = false
@@ -120,10 +121,12 @@ local function split_count(tab)
 end
 
 local function reset_current_window()
-  vim.cmd 'setlocal winfixwidth< number< relativenumber< signcolumn<'
+  vim.cmd 'setlocal winfixwidth< winfixbuf< number< relativenumber< signcolumn<'
 end
 
 local function release(win)
+  vim.wo[win][0].winfixbuf = nil
+
   local empty = vim.api.nvim_create_buf(true, false)
   vim.api.nvim_win_set_buf(win, empty)
 
